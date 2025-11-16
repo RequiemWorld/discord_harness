@@ -39,3 +39,9 @@ class TestClientStateUserInfoAfterOnReady(unittest.IsolatedAsyncioTestCase):
         await self.harness.initialize(self.client, "OctoberLeaves")
         await self._ready_event_wait_helper.wait_for_trigger(3)
         self.assertEqual(555222333, self.client.user.id)
+
+    async def test_should_see_self_as_on_a_bot_account_after_ready_event_from_initializing(self):
+        await self.harness.users.new_user("MyName12345")
+        await self.harness.initialize(self.client, "MyName12345")
+        await self._ready_event_wait_helper.wait_for_trigger(3)
+        self.assertTrue(self.client.user.bot)

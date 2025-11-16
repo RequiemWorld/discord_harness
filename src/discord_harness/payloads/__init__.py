@@ -7,6 +7,7 @@ def make_ready_payload(username: str, guild_ids: list[int]) -> dict:
     """
     user_data = {
         "id": 555222333,
+        "bot": True,
         "username": username,
         "discriminator": "5001",
         "avatar": "6209f9e346b1ba4f4ca6d373bafb860b",
