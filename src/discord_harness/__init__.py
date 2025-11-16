@@ -27,5 +27,5 @@ class Harness:
         connection_state = client._connection
         # ConnectionState.parse_x is where the data off the websocket would usually get handled,
         # we can create the data as necessary and inject it there after we've called the setup hook.
-        ready_event_data_no_guilds = make_ready_payload([])
+        ready_event_data_no_guilds = make_ready_payload(username=discord_name, guild_ids=[])
         connection_state.parse_ready(ready_event_data_no_guilds)
