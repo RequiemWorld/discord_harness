@@ -8,3 +8,6 @@ where = ["src"]
 [project]
 name = "discord_harness"
 version = "0.0.0"
+dependencies = [
+    "discord.py==2.6.4",
+]
