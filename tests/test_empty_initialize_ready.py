@@ -1,8 +1,5 @@
 import discord
 import unittest
-
-from aiohttp.log import client_logger
-
 from discord_harness import Harness
 from tests import EventWaitHelper
 
