@@ -2,9 +2,10 @@ import unittest
 from discord_harness.payloads import make_ready_payload
 
 
-def _make_payload(guilds: list[int] | None = None) -> dict:
+def _make_payload(guilds: list[int] | None = None, username: str | None = None) -> dict:
     guilds = guilds if guilds is not None else []
-    return make_ready_payload(guilds)
+    username = "DefaultName1234" if username is None else username
+    return make_ready_payload(guild_ids=guilds, username=username)
 
 
 class TestGatewayReadyPayloadCreationGuildData(unittest.TestCase):
@@ -42,10 +43,10 @@ class TestGatewayReadyPayloadCreationUserData(unittest.TestCase):
         # Not even bothering to try to give this a valid snowflake ID to start.
         self.assertEqual(555222333, user_data["id"])
 
-    def test_should_fill_in_username_field_with_fixed_value_of_gatedway(self):
+    def test_should_fill_in_username_field_with_value_given_in_function_call(self):
         # "the user's username, not unique across the platform", bots still use discriminators.
-        user_data = _make_payload()["user"]
-        self.assertEqual("gatedway", user_data["username"])
+        user_data = _make_payload(username="MyName123")["user"]
+        self.assertEqual("MyName123", user_data["username"])
 
     def test_should_fill_in_discriminator_field_with_string_value_of_5001(self):
         # bots still use discriminators

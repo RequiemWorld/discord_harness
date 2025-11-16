@@ -1,13 +1,13 @@
 
 
-def make_ready_payload(guild_ids: list[int]) -> dict:
+def make_ready_payload(username: str, guild_ids: list[int]) -> dict:
     """
     Makes the payload the client should receive after connecting to the gateway,
     with a list of each 'unavailable guild' id the bot is in, and default values for everything else.
     """
     user_data = {
         "id": 555222333,
-        "username": "gatedway",
+        "username": username,
         "discriminator": "5001",
         "avatar": "6209f9e346b1ba4f4ca6d373bafb860b",
     }
