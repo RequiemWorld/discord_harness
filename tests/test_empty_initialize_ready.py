@@ -1,7 +1,7 @@
 import discord
 import unittest
 from discord_harness import Harness
-from tests import EventWaitHelper
+from . import EventWaitHelper
 
 
 class TestOnReadyEventAfterSimpleInitialization(unittest.IsolatedAsyncioTestCase):
