@@ -1,3 +1,8 @@
+class User:
+    def __init__(self, id_: int, username: str):
+        self.id = id_
+        self.username = username
+
 
 class Guild:
     def __init__(self, id_: int, name: str, owner_id: int):
