@@ -15,9 +15,14 @@ class Guild:
 
 
 class Guilds:
+    def __init__(self):
+        self._guild_list: list[Guild] = []
+
+    def add_new_guild(self, guild: Guild) -> None:
+        self._guild_list.append(guild)
 
     def get_all_guilds(self) -> list[Guild]:
-        return []
+        return self._guild_list.copy()
 
 
 class SystemState:
