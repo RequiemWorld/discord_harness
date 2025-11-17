@@ -1,4 +1,17 @@
 
+class Guild:
+    def __init__(self, id_: int, name: str, owner_id: int):
+        self.id = id_
+        self.name = name
+        self.owner_id = owner_id
+        self._members = list()
+
+    @property
+    def members(self) -> list[int]:
+        """
+        The list of identifiers for members who are in the guild.
+        """
+        return self._members
 
 class SystemState:
     def __init__(self):
