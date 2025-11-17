@@ -4,6 +4,20 @@ class User:
         self.username = username
 
 
+class Users:
+    def __init__(self):
+        self._users = []
+
+    # There is no discriminator logic for this yet.
+    def find_by_username(self, username: str) -> User | None:
+        for user in self._users:
+            if user.username == username:
+                return user
+        return None
+
+    def add_new_user(self, user: User) -> None:
+        self._users.append(user)
+
 class Guild:
     def __init__(self, id_: int, name: str, owner_id: int):
         self.id = id_
