@@ -13,6 +13,13 @@ class Guild:
         """
         return self._members
 
+
+class Guilds:
+
+    def get_all_guilds(self) -> list[Guild]:
+        return []
+
+
 class SystemState:
     def __init__(self):
         self._id_to_increment_from = 0
