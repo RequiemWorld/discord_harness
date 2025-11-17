@@ -44,3 +44,29 @@ class TestGettingAllGuilds(unittest.TestCase):
         arbitrary_guild = _make_guild(277)
         self._guilds.get_all_guilds().append(arbitrary_guild)
         self.assertNotIn(arbitrary_guild, self._guilds.get_all_guilds())
+
+
+class TestGettingGuildsContainingMemberWithId(unittest.TestCase):
+    def setUp(self):
+        self._guilds = Guilds()
+
+    def test_should_be_able_to_find_only_guild_containing_member_when_they_are_in_one(self):
+        guild = _make_guild(1)
+        guild.members.append(200)
+        self._guilds.add_new_guild(guild)
+        self.assertEqual([guild], self._guilds.get_guilds_by_member_id(200))
+
+    def test_should_be_unable_to_find_anything_when_there_are_no_guilds_to_begin_with(self):
+        self.assertEqual([], self._guilds.get_guilds_by_member_id(400))
+
+    def test_should_be_unable_to_find_anything_when_there_are_guilds_but_none_containing_member(self):
+        self._guilds.add_new_guild(_make_guild(1))
+        self._guilds.add_new_guild(_make_guild(2))
+        self._guilds.add_new_guild(_make_guild(3))
+        self.assertEqual([], self._guilds.get_guilds_by_member_id(400))
+
+    def test_should_be_unable_to_find_anything_when_there_is_a_guild_with_a_member_but_not_with_given_id(self):
+        guild = _make_guild(1)
+        guild.members.append(50)
+        self._guilds.add_new_guild(guild)
+        self.assertEqual([], self._guilds.get_guilds_by_member_id(25))

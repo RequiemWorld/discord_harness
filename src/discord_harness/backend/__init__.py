@@ -43,6 +43,13 @@ class Guilds:
     def get_all_guilds(self) -> list[Guild]:
         return self._guild_list.copy()
 
+    def get_guilds_by_member_id(self, member_id: int) -> list[Guild]:
+        guilds_with_member = []
+        for guild in self._guild_list:
+            if member_id in guild.members:
+                guilds_with_member.append(guild)
+        return guilds_with_member
+
 
 class SystemState:
     def __init__(self):
