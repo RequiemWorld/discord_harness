@@ -1,5 +1,6 @@
 import discord
 from discord_harness.backend import User
+from discord_harness.backend import Guild
 from discord_harness.backend import SystemState
 from discord_harness.payloads import make_ready_payload
 
@@ -17,9 +18,18 @@ class HarnessGuilds:
     def __init__(self, state: SystemState):
         self._state = state
 
-    # async def new_guild(self, guild_name: str, owner_name: str):
-    #     new_guild_id = self._state.next_id()
-    #     new_guild_name =
+    async def new_guild(self, guild_name: str, owner_name: str) -> None:
+        """
+        :raises ValueError: When the there is no user in the system with the given owner name.
+        """
+        if (user := self._state.users.find_by_username(owner_name)) is None:
+            raise ValueError(f"no user with the name {owner_name} could be found in system")
+        guild_id = self._state.next_id()
+        guild_name = guild_name
+        guild_owner_id = user.id
+        new_guild = Guild(guild_id, guild_name, guild_owner_id)
+        new_guild.members.append(guild_owner_id)
+        self._state.guilds.add_new_guild(new_guild)
 
 
 class Harness:
