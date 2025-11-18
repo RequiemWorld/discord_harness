@@ -36,10 +36,15 @@ class Harness:
     def __init__(self):
         system_state = SystemState()
         self._users = HarnessUsers(system_state)
+        self._guilds = HarnessGuilds(system_state)
 
     @property
     def users(self):
         return self._users
+
+    @property
+    def guilds(self):
+        return self._guilds
 
     async def initialize(self, client: discord.Client, discord_name: str):
         """
