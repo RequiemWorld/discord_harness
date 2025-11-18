@@ -32,10 +32,10 @@ class TestFindingIdByUsername(TestCase):
         self._users = Users()
 
     def test_should_find_nothing_when_no_user_with_name_exists(self):
-        self.assertIsNone(self._users.find_by_username("NonExistentName"))
+        self.assertIsNone(self._users.find_id_for_username("NonExistentName"))
 
     def test_should_find_id_of_account_when_user_with_name_exists(self):
         user = User(id_=555, username="NonExistentName")
         self._users.add_new_user(user)
-        self.assertEqual(555, self._users.find_by_username("NonExistentName"))
+        self.assertEqual(555, self._users.find_id_for_username("NonExistentName"))
 
