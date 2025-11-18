@@ -15,6 +15,15 @@ class Users:
                 return user
         return None
 
+    def find_id_for_username(self, username: str) -> int | None:
+        """
+        Find the id of the user with the given username. No discriminator/bot logic.
+        """
+        for user in self._users:
+            if user.username == username:
+                return user.id
+        return None
+
     def add_new_user(self, user: User) -> None:
         self._users.append(user)
 
