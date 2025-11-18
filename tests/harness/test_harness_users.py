@@ -1,12 +1,7 @@
-import unittest
-from discord_harness import HarnessUsers
-from discord_harness.backend import SystemState
+from . import HarnessPiecesTestFixture
 
 
-class TestHarnessNewUserCreation(unittest.IsolatedAsyncioTestCase):
-    async def asyncSetUp(self):
-        self._system_state = SystemState()
-        self._harness_users = HarnessUsers(self._system_state)
+class TestHarnessNewUserCreation(HarnessPiecesTestFixture):
 
     async def test_should_make_new_user_and_add_to_system_state_with_name_given(self):
         await self._harness_users.new_user("NamedPerson")

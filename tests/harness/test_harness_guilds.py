@@ -1,14 +1,7 @@
-from unittest import IsolatedAsyncioTestCase
-from discord_harness import SystemState
-from discord_harness import HarnessUsers
-from discord_harness import HarnessGuilds
+from . import HarnessPiecesTestFixture
 
 
-class TestNewGuildMethod(IsolatedAsyncioTestCase):
-    def setUp(self):
-        self._system_state = SystemState()
-        self._harness_users = HarnessUsers(self._system_state)
-        self._harness_guilds = HarnessGuilds(self._system_state)
+class TestNewGuildMethod(HarnessPiecesTestFixture):
 
     async def test_should_raise_value_error_when_no_user_with_owner_name_exists(self):
         with self.assertRaises(ValueError):
