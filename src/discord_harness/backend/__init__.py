@@ -54,7 +54,12 @@ class Guilds:
 class SystemState:
     def __init__(self):
         self._guilds = Guilds()
+        self._users = Users()
         self._id_to_increment_from = 0
+
+    @property
+    def users(self):
+        return self._users
 
     @property
     def guilds(self):
