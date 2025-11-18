@@ -34,9 +34,9 @@ class HarnessGuilds:
 
 class Harness:
     def __init__(self):
-        system_state = SystemState()
-        self._users = HarnessUsers(system_state)
-        self._guilds = HarnessGuilds(system_state)
+        self._state = SystemState()
+        self._users = HarnessUsers(self._state)
+        self._guilds = HarnessGuilds(self._state)
 
     @property
     def users(self):
