@@ -5,6 +5,17 @@ from discord_harness.backend import SystemState
 from discord_harness.payloads import make_ready_payload
 
 
+class HarnessError(Exception):
+    pass
+
+class NoSuchGuildError(HarnessError):
+    pass
+
+
+class NoSuchUserError(HarnessError):
+    pass
+
+
 class HarnessUsers:
     def __init__(self, state: SystemState):
         self._state = state
