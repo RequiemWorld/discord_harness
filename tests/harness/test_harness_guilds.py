@@ -1,10 +1,10 @@
 from . import HarnessPiecesTestFixture
-
+from discord_harness import NoSuchUserError
 
 class TestNewGuildMethod(HarnessPiecesTestFixture):
 
-    async def test_should_raise_value_error_when_no_user_with_owner_name_exists(self):
-        with self.assertRaises(ValueError):
+    async def test_should_raise_no_such_user_error_when_no_user_with_owner_name_exists(self):
+        with self.assertRaises(NoSuchUserError):
             await self._harness_guilds.new_guild("GuildedName", "Username123")
 
     async def test_should_make_guild_with_given_name_in_system_state(self):

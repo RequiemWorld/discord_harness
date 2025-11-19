@@ -31,10 +31,10 @@ class HarnessGuilds:
 
     async def new_guild(self, guild_name: str, owner_name: str) -> None:
         """
-        :raises ValueError: When the there is no user in the system with the given owner name.
+        :raises NoSuchUserError: When the there is no user in the system with the given owner name.
         """
         if (user := self._state.users.find_by_username(owner_name)) is None:
-            raise ValueError(f"no user with the name {owner_name} could be found in system")
+            raise NoSuchUserError(f"no user with the name {owner_name} could be found in system")
         guild_id = self._state.next_id()
         guild_name = guild_name
         guild_owner_id = user.id
