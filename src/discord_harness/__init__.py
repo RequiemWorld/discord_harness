@@ -42,6 +42,23 @@ class HarnessGuilds:
         new_guild.members.append(guild_owner_id)
         self._state.guilds.add_new_guild(new_guild)
 
+    # I don't like the look of guild_name, and then username even though username is one word.
+    async def join_guild(self, guild_name: str, user_name: str) -> None:
+        """
+        :param guild_name: Name of the guild that the user will be added to.
+        :param user_name: Name of the user that will be added to the guild.
+        :raises NoSuchUserError: When name of guild exists, but name of user doesn't.
+        :raises NoSuchGuildError: When name of guild exists, regardless to the existence of the user.
+        """
+        # TODO figure out broadly what to do regarding multiple guilds with the same name
+        guild_with_name = self._state.guilds.find_guild_by_name(guild_name)
+        if guild_with_name is None:
+            raise NoSuchGuildError(f"no guild with the name {guild_name} could be found")
+        id_from_username = self._state.users.find_id_for_username(user_name)
+        if id_from_username is None:
+            raise NoSuchUserError(f"no user with the username {user_name} could be found")
+        guild_with_name.members.append(id_from_username)
+
 
 class Harness:
     def __init__(self):

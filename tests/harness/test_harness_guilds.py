@@ -1,5 +1,7 @@
 from . import HarnessPiecesTestFixture
 from discord_harness import NoSuchUserError
+from discord_harness import NoSuchGuildError
+
 
 class TestNewGuildMethod(HarnessPiecesTestFixture):
 
@@ -17,3 +19,30 @@ class TestNewGuildMethod(HarnessPiecesTestFixture):
         await self._harness_guilds.new_guild(guild_name="NameOfGuild", owner_name="Name555")
         expected_owner_id = self._system_state.users.find_by_username("Name555").id
         self.assertIn(expected_owner_id, self._system_state.guilds.get_all_guilds()[0].members)
+
+
+class TestJoinGuildMethodErrors(HarnessPiecesTestFixture):
+    async def test_should_raise_no_such_guild_error_regardless_to_a_user_with_name_existing_or_not(self):
+        await self._harness_users.new_user("ExistingUser")
+        with self.assertRaises(NoSuchGuildError):
+            await self._harness_guilds.join_guild(guild_name="NotExistingGuild", user_name="ExistingUser")
+        with self.assertRaises(NoSuchGuildError):
+            await self._harness_guilds.join_guild(guild_name="NotExistingGuild", user_name="NotExistingUser")
+
+    async def test_should_raise_no_such_user_error_when_no_user_with_given_user_name_exists_but_guild_does(self):
+        await self._harness_users.new_user("NecessaryOwner")
+        # ^ unrelated to our other check, just needed for creating a guild
+        await self._harness_guilds.new_guild("GuildName", "NecessaryOwner")
+        with self.assertRaises(NoSuchUserError):
+            await self._harness_guilds.join_guild(guild_name="GuildName", user_name="NonExistent")
+
+
+class TestJoinGuildMethodSystemState(HarnessPiecesTestFixture):
+    async def test_should_add_member_to_guild_after_joining_them_to_it_with_harness(self):
+        await self._harness_users.new_user("NecessaryOwner")
+        await self._harness_guilds.new_guild("NecessaryGuild", "NecessaryOwner")
+        await self._harness_users.new_user("BotUser123")
+        await self._harness_guilds.join_guild("NecessaryGuild", "BotUser123")
+        id_of_bot = self._system_state.users.find_id_for_username("BotUser123")
+        guild_member_id_list = self._system_state.guilds.find_guild_by_name("NecessaryGuild").members
+        self.assertIn(id_of_bot, guild_member_id_list)
