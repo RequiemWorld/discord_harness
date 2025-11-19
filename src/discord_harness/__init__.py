@@ -85,5 +85,11 @@ class Harness:
         connection_state = client._connection
         # ConnectionState.parse_x is where the data off the websocket would usually get handled,
         # we can create the data as necessary and inject it there after we've called the setup hook.
-        ready_event_data_no_guilds = make_ready_payload(username=discord_name, guild_ids=[])
-        connection_state.parse_ready(ready_event_data_no_guilds)
+        discord_id = self._state.users.find_id_for_username(discord_name)
+        guild_ids_user_in = [guild.id for guild in self._state.guilds.get_guilds_by_member_id(discord_id)]
+        ready_event_data = make_ready_payload(username=discord_name, guild_ids=guild_ids_user_in)
+        connection_state.parse_ready(ready_event_data)
+        for guild in self._state.guilds.get_guilds_by_member_id(discord_id):
+            # discord.Client.guilds will get populated with only id and name in the data handled
+            guild_create_data = {"id": guild.id, "name": guild.name}
+            connection_state.parse_guild_create(guild_create_data)
