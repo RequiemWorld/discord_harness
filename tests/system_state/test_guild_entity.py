@@ -76,3 +76,13 @@ class TestAddingChannelsToGuild(EmptyGuildTestFixture):
         channel = GuildChannel(id_=8888, name="name123")
         self._empty_guild.channels.append(channel)
         self.assertIn(channel, self._empty_guild.channels)
+
+class TestFindingChannelInGuildByName(EmptyGuildTestFixture):
+
+    def test_should_not_find_a_channel_when_none_with_given_name_are_present(self):
+        self.assertIsNone(self._empty_guild.find_channel_by_name(name="NoExistence"))
+
+    def test_should_find_channel_with_given_name_when_exactly_one_is_present(self):
+        channel = GuildChannel(id_=4, name="channel-name")
+        self._empty_guild.channels.append(channel)
+        self.assertIs(channel, self._empty_guild.find_channel_by_name("channel-name"))

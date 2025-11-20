@@ -39,6 +39,11 @@ class Guild:
     def channels(self) -> list[GuildChannel]:
         return self._channels
 
+    def find_channel_by_name(self, name: str) -> GuildChannel | None:
+        for channel in self._channels:
+            if channel.name == name:
+                return channel
+        return None
 
 class Guilds:
     def __init__(self):
