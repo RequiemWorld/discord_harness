@@ -1,5 +1,17 @@
 import unittest
 from discord_harness.backend import Guild
+from discord_harness.backend import GuildChannel
+
+
+class TestGuildChannelConstruction(unittest.TestCase):
+    def setUp(self):
+        self._empty_channel = GuildChannel(id_=5556, name="channel-name")
+
+    def test_should_have_id_passed_to_constructor(self):
+        self.assertEqual(5556, self._empty_channel.id)
+
+    def test_should_have_name_passed_to_constructor(self):
+        self.assertEqual("channel-name", self._empty_channel.name)
 
 
 class EmptyGuildTestFixture(unittest.TestCase):
