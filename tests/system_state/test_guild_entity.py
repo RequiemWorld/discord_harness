@@ -4,6 +4,11 @@ from discord_harness.backend import GuildChannel
 from discord_harness.backend import GuildMessage
 
 
+class EmptyGuildChannelTestFixture(unittest.TestCase):
+    def setUp(self):
+        self._empty_channel = GuildChannel(id_=5556, name="channel-name")
+
+
 class TestGuildMessageConstruction(unittest.TestCase):
     def setUp(self):
         self._arbitrary_message = GuildMessage(id_=1234, author_id=111222, content="Hello World")
@@ -17,9 +22,7 @@ class TestGuildMessageConstruction(unittest.TestCase):
         self.assertEqual("Hello World", self._arbitrary_message.content)
 
 
-class TestGuildChannelConstruction(unittest.TestCase):
-    def setUp(self):
-        self._empty_channel = GuildChannel(id_=5556, name="channel-name")
+class TestGuildChannelConstruction(EmptyGuildChannelTestFixture):
 
     def test_should_have_id_passed_to_constructor(self):
         self.assertEqual(5556, self._empty_channel.id)
@@ -30,11 +33,7 @@ class TestGuildChannelConstruction(unittest.TestCase):
     def test_should_contain_no_messages_by_default(self):
         self.assertEqual([], self._empty_channel.messages)
 
-
-class TestAddingMessagesToGuildChannel(unittest.TestCase):
-
-    def setUp(self):
-        self._empty_channel = GuildChannel(id_=5556, name="channel-name")
+class TestAddingMessagesToGuildChannel(EmptyGuildChannelTestFixture):
 
     def test_should_be_able_to_add_message_to_channel_and_see_it_after(self):
         new_message = GuildMessage(id_=12345, author_id=222, content="Goodbye World")
