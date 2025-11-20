@@ -46,3 +46,12 @@ class TestJoinGuildMethodSystemState(HarnessPiecesTestFixture):
         id_of_bot = self._system_state.users.find_id_for_username("BotUser123")
         guild_member_id_list = self._system_state.guilds.find_guild_by_name("NecessaryGuild").members
         self.assertIn(id_of_bot, guild_member_id_list)
+
+
+class TestCreateChannelMethodSystemState(HarnessPiecesTestFixture):
+
+    async def test_should_make_new_channel_in_guild_after_creating_one_for_it_in_harness(self):
+        await self.create_user_and_guild(new_user_name="WhoCares", new_guild_name="ArbitraryGuild")
+        await self._harness_guilds.new_channel("ArbitraryGuild", "my-channel123")
+        guild_from_state = self._system_state.guilds.find_guild_by_name("ArbitraryGuild")
+        self.assertIsNotNone(guild_from_state.find_channel_by_name("my-channel123"))

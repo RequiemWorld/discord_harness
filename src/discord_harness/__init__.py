@@ -1,6 +1,7 @@
 import discord
 from discord_harness.backend import User
 from discord_harness.backend import Guild
+from discord_harness.backend import GuildChannel
 from discord_harness.backend import SystemState
 from discord_harness.payloads import make_ready_payload
 
@@ -58,6 +59,18 @@ class HarnessGuilds:
         if id_from_username is None:
             raise NoSuchUserError(f"no user with the username {user_name} could be found")
         guild_with_name.members.append(id_from_username)
+
+    async def new_channel(self, guild_name: str, channel_name: str) -> None:
+        """
+        Effectively creates a public channel in the given guild name.
+
+        :param guild_name: Name of the guild the channel should be created in.
+        :param channel_name: Name of the channel to create in the guild.
+        """
+        new_channel_id = self._state.next_id()
+        channel = GuildChannel(new_channel_id, channel_name)
+        guild_with_matching_name = self._state.guilds.find_guild_by_name(guild_name)
+        guild_with_matching_name.channels.append(channel)
 
 
 class Harness:
