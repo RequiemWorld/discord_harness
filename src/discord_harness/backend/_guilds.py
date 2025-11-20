@@ -12,6 +12,7 @@ class Guild:
         self.name = name
         self.owner_id = owner_id
         self._members = list()
+        self._channels = list()
 
     @property
     def members(self) -> list[int]:
@@ -19,6 +20,10 @@ class Guild:
         The list of identifiers for members who are in the guild.
         """
         return self._members
+
+    @property
+    def channels(self) -> list[GuildChannel]:
+        return self._channels
 
 
 class Guilds:
