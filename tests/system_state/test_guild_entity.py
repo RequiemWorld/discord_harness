@@ -1,6 +1,20 @@
 import unittest
 from discord_harness.backend import Guild
 from discord_harness.backend import GuildChannel
+from discord_harness.backend import GuildMessage
+
+
+class TestGuildMessageConstruction(unittest.TestCase):
+    def setUp(self):
+        self._arbitrary_message = GuildMessage(id_=1234, author_id=111222, content="Hello World")
+    def test_should_have_id_passed_to_constructor(self):
+        self.assertEqual(1234, self._arbitrary_message.id)
+
+    def test_should_have_author_id_passed_to_constructor(self):
+        self.assertEqual(111222, self._arbitrary_message.author_id)
+
+    def test_should_have_content_passed_to_constructor(self):
+        self.assertEqual("Hello World", self._arbitrary_message.content)
 
 
 class TestGuildChannelConstruction(unittest.TestCase):

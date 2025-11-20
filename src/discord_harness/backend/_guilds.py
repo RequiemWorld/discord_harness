@@ -1,4 +1,10 @@
 
+class GuildMessage:
+    def __init__(self, id_: int, author_id: int, content: str):
+        self.id = id_
+        self.author_id = author_id
+        self.content = content
+
 
 class GuildChannel:
     def __init__(self, id_: int, name: str):
