@@ -2,9 +2,12 @@ import unittest
 from discord_harness.backend import Guild
 
 
-class TestGuildEntityConstruction(unittest.TestCase):
+class EmptyGuildTestFixture(unittest.TestCase):
     def setUp(self):
         self._empty_guild = Guild(123, "NameGuild", 456)
+
+
+class TestGuildEntityConstruction(EmptyGuildTestFixture):
 
     def test_should_have_name_id_to_constructor(self):
         self.assertEqual(123, self._empty_guild.id)
@@ -19,9 +22,7 @@ class TestGuildEntityConstruction(unittest.TestCase):
         self.assertEqual([], self._empty_guild.members)
 
 
-class TestAddingMembersToGuild(unittest.TestCase):
-    def setUp(self):
-        self._empty_guild = Guild(123, "NameGuild", 456)
+class TestAddingMembersToGuild(EmptyGuildTestFixture):
 
     def test_should_be_able_to_add_member_id_to_guild_and_see_it_after(self):
         self._empty_guild.members.append(5000)
