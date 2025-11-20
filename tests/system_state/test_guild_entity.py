@@ -27,6 +27,20 @@ class TestGuildChannelConstruction(unittest.TestCase):
     def test_should_have_name_passed_to_constructor(self):
         self.assertEqual("channel-name", self._empty_channel.name)
 
+    def test_should_contain_no_messages_by_default(self):
+        self.assertEqual([], self._empty_channel.messages)
+
+
+class TestAddingMessagesToGuildChannel(unittest.TestCase):
+
+    def setUp(self):
+        self._empty_channel = GuildChannel(id_=5556, name="channel-name")
+
+    def test_should_be_able_to_add_message_to_channel_and_see_it_after(self):
+        new_message = GuildMessage(id_=12345, author_id=222, content="Goodbye World")
+        self._empty_channel.messages.append(new_message)
+        self.assertIn(new_message, self._empty_channel.messages)
+
 
 class EmptyGuildTestFixture(unittest.TestCase):
     def setUp(self):

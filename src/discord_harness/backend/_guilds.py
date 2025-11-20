@@ -10,6 +10,14 @@ class GuildChannel:
     def __init__(self, id_: int, name: str):
         self.id = id_
         self.name = name
+        self._messages = list()
+
+    @property
+    def messages(self) -> list[GuildMessage]:
+        """
+        The list of messages that are in the guild.
+        """
+        return self._messages
 
 
 class Guild:
