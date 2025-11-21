@@ -1,37 +1,53 @@
 import discord
 import asyncio
+from typing import Callable
+from typing import Coroutine
 from typing import Any
 
 
+HandlerThing = Callable[..., Coroutine[Any, Any, None]]
+
+# Not made using TDD. Design in ergonomics is fine so far but interface for testing is a bit messy.
 class EventWaitHelper:
     """
     A helper class for adding an event handler to a bot dynamically,
     and waiting for an event to be triggered, or timing out. No cleanup.
     """
-    def __init__(self, asyncio_event: asyncio.Event):
+    def __init__(self, asyncio_event: asyncio.Event, handling_thing: HandlerThing):
         """
         Use the with_client method, leave construction to internal use.
 
         :param asyncio_event: The asyncio event that will be set when the handler function is called.
+        :param handling_thing: The function that produces a coroutine that can be awaited (e.g. async def on_ready..)
         """
         self._asyncio_event = asyncio_event
+        self._handling_thing = handling_thing
         self._arguments_passed = None
 
     @property
     def args(self) -> tuple[Any] | None:
         return self._arguments_passed
 
+    @property
+    def handler(self) -> HandlerThing:
+        """
+        The function that produces the coroutine (async def) that will
+        be executed to trigger the event and set the arguments.
+        """
+        return self._handling_thing
+
     @classmethod
     def using_client(cls, client: discord.Client, event_name: str) -> "EventWaitHelper":
         """
         :param event_name: Name the event as the function would typically be called e.g. on_ready, on_message, etc.
         """
-        asyncio_event = asyncio.Event()
-        wait_helper = EventWaitHelper(asyncio_event)
+        # By the time this is executed, his should have access to wait_helper defined later in the local scope.
         async def my_handler(*args, **kwargs) -> None:
             asyncio_event.set()
             wait_helper._arguments_passed = args
 
+        asyncio_event = asyncio.Event()
+        wait_helper = EventWaitHelper(asyncio_event, my_handler)
         my_handler.__name__ = event_name
         client.event(my_handler)
         return wait_helper
