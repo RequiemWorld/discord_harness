@@ -1,5 +1,6 @@
 import discord
 import asyncio
+from typing import Any
 
 
 class EventWaitHelper:
@@ -14,6 +15,11 @@ class EventWaitHelper:
         :param asyncio_event: The asyncio event that will be set when the handler function is called.
         """
         self._asyncio_event = asyncio_event
+        self._arguments_passed = None
+
+    @property
+    def args(self) -> tuple[Any] | None:
+        return self._arguments_passed
 
     @classmethod
     def using_client(cls, client: discord.Client, event_name: str) -> "EventWaitHelper":
@@ -21,11 +27,14 @@ class EventWaitHelper:
         :param event_name: Name the event as the function would typically be called e.g. on_ready, on_message, etc.
         """
         asyncio_event = asyncio.Event()
+        wait_helper = EventWaitHelper(asyncio_event)
         async def my_handler(*args, **kwargs) -> None:
             asyncio_event.set()
+            wait_helper._arguments_passed = args
+
         my_handler.__name__ = event_name
         client.event(my_handler)
-        return EventWaitHelper(asyncio_event)
+        return wait_helper
 
     @staticmethod
     async def _wait_for_asyncio_event_or_timeout(event: asyncio.Event, timeout: float) -> None:
