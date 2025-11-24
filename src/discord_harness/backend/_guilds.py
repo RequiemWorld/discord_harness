@@ -62,6 +62,12 @@ class Guilds:
                 guilds_with_member.append(guild)
         return guilds_with_member
 
+    def find_guild_by_id(self, guild_id: int) -> Guild | None:
+        for guild in self._guild_list:
+            if guild.id == guild_id:
+                return guild
+        return None
+
     def find_guild_by_name(self, guild_name: str) -> Guild | None:
         for guild in self._guild_list:
             if guild.name == guild_name:

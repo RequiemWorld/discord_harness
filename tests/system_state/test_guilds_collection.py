@@ -46,6 +46,18 @@ class TestGettingAllGuilds(unittest.TestCase):
         self.assertNotIn(arbitrary_guild, self._guilds.get_all_guilds())
 
 
+class TestFindingBuildById(unittest.TestCase):
+    def setUp(self):
+        self._guilds = Guilds()
+
+    def test_should_not_find_a_guild_when_none_with_id_have_been_added(self):
+        self.assertIsNone(self._guilds.find_guild_by_id(8881))
+
+    def test_should_find_guild_when_one_with_id_has_been_added(self):
+        guild_to_add = Guild(id_=5556, name="SomeName", owner_id=99991)
+        self._guilds.add_new_guild(guild_to_add)
+        self.assertIs(guild_to_add, self._guilds.find_guild_by_id(guild_id=5556))
+
 class TestFindingGuildByName(unittest.TestCase):
     def setUp(self):
         self._guilds = Guilds()
