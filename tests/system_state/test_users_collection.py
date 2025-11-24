@@ -26,6 +26,18 @@ class TestFindingUsersByName(TestCase):
         user = User(id_=111, username="xyz")
         self.assertEqual("xyz", user.username)
 
+class TestFindingUsersById(TestCase):
+    def setUp(self):
+        self._users = Users()
+
+    def test_should_return_none_when_there_is_no_user_with_given_id_in_collection(self):
+        self.assertIsNone(self._users.find_by_id(userid=5556))
+
+    def test_should_be_able_to_find_user_with_given_id_when_there_is_one_in_collection(self):
+        user_with_id = User(id_=5510, username="zyx")
+        self._users.add_new_user(user_with_id)
+        self.assertIs(user_with_id, self._users.find_by_id(5510))
+
 
 class TestFindingIdByUsername(TestCase):
     def setUp(self):

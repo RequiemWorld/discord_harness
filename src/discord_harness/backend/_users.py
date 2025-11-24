@@ -10,6 +10,12 @@ class Users:
     def __init__(self):
         self._users = []
 
+    def find_by_id(self, userid: int) -> User | None:
+        for user in self._users:
+            if user.id == userid:
+                return user
+        return None
+
     # There is no discriminator logic for this yet.
     def find_by_username(self, username: str) -> User | None:
         for user in self._users:
