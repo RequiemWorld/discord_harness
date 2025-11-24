@@ -4,7 +4,7 @@ from discord_harness.backend.interface import UserCreationRequest
 from discord_harness.backend.interface import GuildCreationRequest
 from discord_harness.backend.interface import SystemStateBackendUsers
 from discord_harness.backend.interface import SystemStateBackendGuilds
-
+from discord_harness.backend.interface import SystemStateGatewayInformationInterface
 
 class BackendPiecesTestFixture(unittest.IsolatedAsyncioTestCase):
     """
@@ -16,6 +16,7 @@ class BackendPiecesTestFixture(unittest.IsolatedAsyncioTestCase):
         self._system_state = SystemState()
         self._backend_users = SystemStateBackendUsers(self._system_state)
         self._backend_guilds = SystemStateBackendGuilds(self._system_state)
+        self._backend_gateway = SystemStateGatewayInformationInterface(self._system_state)
 
     async def create_user(self, username: str):
         creation_request = UserCreationRequest(username=username)
