@@ -46,7 +46,7 @@ class TestGettingAllGuilds(unittest.TestCase):
         self.assertNotIn(arbitrary_guild, self._guilds.get_all_guilds())
 
 
-class TestFindingBuildById(unittest.TestCase):
+class TestFindingGuildById(unittest.TestCase):
     def setUp(self):
         self._guilds = Guilds()
 
