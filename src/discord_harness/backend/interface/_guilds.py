@@ -24,4 +24,5 @@ class SystemStateBackendGuilds(DiscordBackendGuilds):
     async def create_guild(self, request: GuildCreationRequest) -> None:
         owner_id = self._state.users.find_id_for_username(request.guild_owner_name)
         new_guild = Guild(id_=self._state.next_id(), name=request.guild_name, owner_id=owner_id)
+        new_guild.members.append(owner_id)
         self._state.guilds.add_new_guild(new_guild)

@@ -20,5 +20,13 @@ class BackendPiecesTestFixture(unittest.IsolatedAsyncioTestCase):
         creation_request = UserCreationRequest(username=username)
         await self._backend_users.create_user(creation_request)
 
+    async def create_guild(self, guild_name: str, username: str):
+        creation_request = GuildCreationRequest(guild_name, username)
+        await self._backend_guilds.create_guild(creation_request)
+
+    async def create_user_and_guild(self, username: str, guild_name: str):
+        await self.create_user(username)
+        await self.create_guild(guild_name, username)
+
     def override_next_id_indefinitely(self, next_id: int):
         self._system_state.next_id = lambda: next_id

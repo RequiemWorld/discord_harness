@@ -26,3 +26,9 @@ class TestBackendGuildsGuildCreationSystemState(BackendPiecesTestFixture):
         created_user_id = self._system_state.users.find_id_for_username("MyName")
         created_guild_owner_id = self._system_state.guilds.find_guild_by_name("AnotherGuild").owner_id
         self.assertEqual(created_user_id, created_guild_owner_id)
+
+    async def test_should_create_guild_in_system_state_with_the_owner_as_a_member(self):
+        await self.create_user_and_guild(username="SomeNewUser", guild_name="SomeNewGuild")
+        id_of_new_user = self._system_state.users.find_id_for_username("SomeNewUser")
+        guild_we_created = self._system_state.guilds.find_guild_by_name("SomeNewGuild")
+        self.assertIn(id_of_new_user, guild_we_created.members)
