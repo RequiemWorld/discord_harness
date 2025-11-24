@@ -23,8 +23,11 @@ class TestFindingUsersByName(TestCase):
         self.assertIsNone(self._users.find_by_username("ArbitraryName"))
 
     def test_should_be_able_to_find_user_with_given_username_when_there_is_one_in_collection(self):
-        user = User(id_=111, username="xyz")
-        self.assertEqual("xyz", user.username)
+        user_to_add = User(id_=111, username="xyz")
+        self._users.add_new_user(user_to_add)
+        user_found_by_name = self._users.find_by_username("xyz")
+        self.assertEqual("xyz", user_found_by_name.username)
+
 
 class TestFindingUsersById(TestCase):
     def setUp(self):
