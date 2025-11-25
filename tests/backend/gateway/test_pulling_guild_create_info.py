@@ -1,7 +1,7 @@
 from .. import BackendPiecesTestFixture
 
 
-class TestPullingGuildCreateInfoBasicInformation(BackendPiecesTestFixture):
+class TestPullingGuildCreateInfoBasicInformationByGuildId(BackendPiecesTestFixture):
     async def asyncSetUp(self):
         await super().asyncSetUp()
         # As of November 23rd 2025 there is no code on this backend to join a user to a guild,
