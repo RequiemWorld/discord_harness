@@ -23,8 +23,12 @@ class GatewayInformationInterface(abc.ABC):
     async def get_ready_info(self, userid: int) -> ReadyInfo:
         raise NotImplementedError
 
+    @abc.abstractmethod
+    async def get_guild_creates(self, userid: int) -> list[GuildCreateInfo]:
+        raise NotImplementedError
 
 class SystemStateGatewayInformationInterface(GatewayInformationInterface):
+
     def __init__(self, system_state: SystemState):
         self._state = system_state
 
@@ -34,3 +38,11 @@ class SystemStateGatewayInformationInterface(GatewayInformationInterface):
         for guild in self._state.guilds.get_guilds_by_member_id(userid):
             unavailable_guild_ids.append(guild.id)
         return ReadyInfo(user_with_id.id, user_with_id.username, unavailable_guild_ids)
+
+    async def get_guild_creates(self, userid: int) -> list[GuildCreateInfo]:
+        guild_create_entries = []
+        guilds_containing_user = self._state.guilds.get_guilds_by_member_id(userid)
+        for guild in guilds_containing_user:
+            guild_create_info = GuildCreateInfo(guild_id=guild.id, guild_name=guild.name)
+            guild_create_entries.append(guild_create_info)
+        return guild_create_entries
