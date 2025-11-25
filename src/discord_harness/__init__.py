@@ -3,6 +3,9 @@ from discord_harness.backend import User
 from discord_harness.backend import Guild
 from discord_harness.backend import GuildChannel
 from discord_harness.backend import SystemState
+from discord_harness.backend.interface import UserCreationRequest
+from discord_harness.backend.interface import DiscordBackendUsers
+from discord_harness.backend.interface import SystemStateBackendUsers
 from discord_harness.payloads import make_ready_payload
 
 
@@ -18,12 +21,12 @@ class NoSuchUserError(HarnessError):
 
 
 class HarnessUsers:
-    def __init__(self, state: SystemState):
-        self._state = state
+    def __init__(self, backend_users: DiscordBackendUsers):
+        self._backend_users = backend_users
 
     async def new_user(self, name: str) -> None:
-        new_user = User(id_=self._state.next_id(), username=name)
-        self._state.users.add_new_user(new_user)
+        creation_request = UserCreationRequest(username=name)
+        await self._backend_users.create_user(creation_request)
 
 
 class HarnessGuilds:
@@ -76,7 +79,8 @@ class HarnessGuilds:
 class Harness:
     def __init__(self):
         self._state = SystemState()
-        self._users = HarnessUsers(self._state)
+        backend_users = SystemStateBackendUsers(self._state)
+        self._users = HarnessUsers(backend_users)
         self._guilds = HarnessGuilds(self._state)
 
     @property
