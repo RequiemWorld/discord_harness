@@ -23,10 +23,6 @@ class GatewayInformationInterface(abc.ABC):
     async def get_ready_info(self, userid: int) -> ReadyInfo:
         raise NotImplementedError
 
-    @abc.abstractmethod
-    async def get_guild_create(self, guild_id: int) -> GuildCreateInfo:
-        raise NotImplementedError
-
 
 class SystemStateGatewayInformationInterface(GatewayInformationInterface):
     def __init__(self, system_state: SystemState):
@@ -38,7 +34,3 @@ class SystemStateGatewayInformationInterface(GatewayInformationInterface):
         for guild in self._state.guilds.get_guilds_by_member_id(userid):
             unavailable_guild_ids.append(guild.id)
         return ReadyInfo(user_with_id.id, user_with_id.username, unavailable_guild_ids)
-
-    async def get_guild_create(self, guild_id: int) -> GuildCreateInfo:
-        guild_with_id = self._state.guilds.find_guild_by_id(guild_id)
-        return GuildCreateInfo(guild_id=guild_with_id.id, guild_name=guild_with_id.name)
