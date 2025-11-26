@@ -7,7 +7,8 @@ from ._guilds import SystemStateBackendGuilds
 from ._guilds import GuildCreationRequest
 from ._gateway import GatewayInformationInterface
 from ._gateway import SystemStateGatewayInformationInterface
-
+from ._lookup import DiscordBackendLookup
+from ._lookup import SystemStateBackendLookup
 
 class DiscordBackendInterface(abc.ABC):
     def __init__(self,
