@@ -6,6 +6,13 @@ from discord_harness.backend import SystemState
 from discord_harness.backend.interface import UserCreationRequest
 from discord_harness.backend.interface import DiscordBackendUsers
 from discord_harness.backend.interface import SystemStateBackendUsers
+from discord_harness.backend.interface import DiscordBackendGuilds
+from discord_harness.backend.interface import SystemStateBackendGuilds
+from discord_harness.backend.interface import GuildCreationRequest
+from discord_harness.backend.interface import GuildJoinRequest
+from discord_harness.backend.interface import TextChannelCreationRequest
+from discord_harness.backend.interface import DiscordBackendLookup
+from discord_harness.backend.interface import SystemStateBackendLookup
 from discord_harness.backend.interface import GatewayInformationInterface
 from discord_harness.backend.interface import SystemStateGatewayInformationInterface
 from discord_harness.payloads import make_ready_payload
@@ -32,21 +39,19 @@ class HarnessUsers:
 
 
 class HarnessGuilds:
-    def __init__(self, state: SystemState):
-        self._state = state
+    def __init__(self, guilds: DiscordBackendGuilds, lookup: DiscordBackendLookup):
+        self._guilds = guilds
+        self._lookup = lookup
 
     async def new_guild(self, guild_name: str, owner_name: str) -> None:
         """
         :raises NoSuchUserError: When the there is no user in the system with the given owner name.
         """
-        if (user := self._state.users.find_by_username(owner_name)) is None:
+        # Maybe the backend should be giving this error under the same condition instead
+        if not await self._lookup.lookup_user_existence_by_name(owner_name):
             raise NoSuchUserError(f"no user with the name {owner_name} could be found in system")
-        guild_id = self._state.next_id()
-        guild_name = guild_name
-        guild_owner_id = user.id
-        new_guild = Guild(guild_id, guild_name, guild_owner_id)
-        new_guild.members.append(guild_owner_id)
-        self._state.guilds.add_new_guild(new_guild)
+        guild_creation_request = GuildCreationRequest(guild_name=guild_name, guild_owner_name=owner_name)
+        await self._guilds.create_guild(guild_creation_request)
 
     # I don't like the look of guild_name, and then username even though username is one word.
     async def join_guild(self, guild_name: str, user_name: str) -> None:
@@ -57,13 +62,15 @@ class HarnessGuilds:
         :raises NoSuchGuildError: When name of guild exists, regardless to the existence of the user.
         """
         # TODO figure out broadly what to do regarding multiple guilds with the same name
-        guild_with_name = self._state.guilds.find_guild_by_name(guild_name)
-        if guild_with_name is None:
+        guild_with_name_exists = await self._lookup.lookup_guild_existence_by_name(guild_name)
+        if not guild_with_name_exists:
             raise NoSuchGuildError(f"no guild with the name {guild_name} could be found")
-        id_from_username = self._state.users.find_id_for_username(user_name)
-        if id_from_username is None:
+        user_with_name_exists = await self._lookup.lookup_user_existence_by_name(user_name)
+        if not user_with_name_exists:
             raise NoSuchUserError(f"no user with the username {user_name} could be found")
-        guild_with_name.members.append(id_from_username)
+        guild_join_request = GuildJoinRequest(guild_name, user_name)
+        # Maybe change above error handling/make the backend raise the same errors instead.
+        await self._guilds.join_guild(guild_join_request)
 
     async def new_channel(self, guild_name: str, channel_name: str) -> None:
         """
@@ -72,19 +79,19 @@ class HarnessGuilds:
         :param guild_name: Name of the guild the channel should be created in.
         :param channel_name: Name of the channel to create in the guild.
         """
-        new_channel_id = self._state.next_id()
-        channel = GuildChannel(new_channel_id, channel_name)
-        guild_with_matching_name = self._state.guilds.find_guild_by_name(guild_name)
-        guild_with_matching_name.channels.append(channel)
+        new_channel_request = TextChannelCreationRequest(guild_name=guild_name, channel_name=channel_name)
+        await self._guilds.create_text_channel(new_channel_request)
 
 
 class Harness:
     def __init__(self):
         self._state = SystemState()
         backend_users = SystemStateBackendUsers(self._state)
+        backend_guilds = SystemStateBackendGuilds(self._state)
+        backend_lookup = SystemStateBackendLookup(self._state)
         self._backend_gateway = SystemStateGatewayInformationInterface(self._state)
         self._users = HarnessUsers(backend_users)
-        self._guilds = HarnessGuilds(self._state)
+        self._guilds = HarnessGuilds(backend_guilds, backend_lookup)
 
     @property
     def users(self):
