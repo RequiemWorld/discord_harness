@@ -109,7 +109,6 @@ class Harness:
         ready_info = await self._backend_gateway.get_ready_info(discord_id)
         ready_event_data = make_ready_payload(username=discord_name, guild_ids=ready_info.unavailable_guild_ids)
         connection_state.parse_ready(ready_event_data)
-        for guild in self._state.guilds.get_guilds_by_member_id(discord_id):
-            # discord.Client.guilds will get populated with only id and name in the data handled
-            guild_create_data = {"id": guild.id, "name": guild.name}
+        for create_info in await self._backend_gateway.get_guild_creates(discord_id):
+            guild_create_data = {"id": create_info.guild_id, "name": create_info.guild_name}
             connection_state.parse_guild_create(guild_create_data)
