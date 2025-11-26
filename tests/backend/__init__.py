@@ -20,6 +20,11 @@ class BackendPiecesTestFixture(unittest.IsolatedAsyncioTestCase):
         self._backend_gateway = SystemStateGatewayInformationInterface(self._system_state)
         self._backend_lookup = SystemStateBackendLookup(self._system_state)
 
+    def assertGuildWithNameHasMemberWithId(self, member_id: int, guild_name: str):
+        fail_message = f"member with id {member_id} could not be found in guild with name {guild_name}"
+        guild = self._system_state.guilds.find_guild_by_name(guild_name)
+        self.assertIn(member_id, guild.members, msg=fail_message)
+
     async def create_user(self, username: str):
         creation_request = UserCreationRequest(username=username)
         await self._backend_users.create_user(creation_request)
