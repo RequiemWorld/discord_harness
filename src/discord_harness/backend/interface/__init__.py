@@ -6,6 +6,7 @@ from ._guilds import DiscordBackendGuilds
 from ._guilds import SystemStateBackendGuilds
 from ._guilds import GuildCreationRequest
 from ._guilds import GuildJoinRequest
+from ._guilds import TextChannelCreationRequest
 from ._gateway import GatewayInformationInterface
 from ._gateway import SystemStateGatewayInformationInterface
 from ._lookup import DiscordBackendLookup

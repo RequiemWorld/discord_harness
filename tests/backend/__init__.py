@@ -25,6 +25,16 @@ class BackendPiecesTestFixture(unittest.IsolatedAsyncioTestCase):
         guild = self._system_state.guilds.find_guild_by_name(guild_name)
         self.assertIn(member_id, guild.members, msg=fail_message)
 
+    def assertGuildWithNameHasChannelWithName(self, channel_name: str, guild_name: str):
+        found_channel_with_name_in_guild = False
+        for channel in self._system_state.guilds.find_guild_by_name(guild_name).channels:
+            if channel.name == channel_name:
+                found_channel_with_name_in_guild = True
+                break
+        fail_message = f"no channel with name {channel_name} could be found in guild with name {guild_name}"
+        if not found_channel_with_name_in_guild:
+            self.fail(fail_message)
+
     async def create_user(self, username: str):
         creation_request = UserCreationRequest(username=username)
         await self._backend_users.create_user(creation_request)

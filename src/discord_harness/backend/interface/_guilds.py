@@ -2,6 +2,7 @@ import abc
 from dataclasses import dataclass
 from discord_harness import SystemState
 from discord_harness.backend import Guild
+from discord_harness.backend import GuildChannel
 
 
 @dataclass(frozen=True, slots=True)
@@ -16,6 +17,12 @@ class GuildJoinRequest:
     user_name: str
 
 
+@dataclass(frozen=True, slots=True)
+class TextChannelCreationRequest:
+    guild_name: str  # TODO still decide how to handle what to do when there's multiple guilds of the same name
+    channel_name: str
+
+
 class DiscordBackendGuilds(abc.ABC):
 
     @abc.abstractmethod
@@ -26,7 +33,13 @@ class DiscordBackendGuilds(abc.ABC):
     async def join_guild(self, request: GuildJoinRequest) -> None:
         raise NotImplementedError
 
+    @abc.abstractmethod
+    async def create_text_channel(self, request: TextChannelCreationRequest) -> None:
+        raise NotImplementedError
+
+
 class SystemStateBackendGuilds(DiscordBackendGuilds):
+
     def __init__(self, system_state: SystemState):
         self._state = system_state
 
@@ -41,3 +54,10 @@ class SystemStateBackendGuilds(DiscordBackendGuilds):
         id_for_user_with_name = self._state.users.find_id_for_username(request.user_name)
         first_guild_with_name = self._state.guilds.find_guild_by_name(request.guild_name)
         first_guild_with_name.members.append(id_for_user_with_name)
+
+    async def create_text_channel(self, request: TextChannelCreationRequest) -> None:
+        # todo plan explicit logic for when there are multiple guilds with the same name
+        first_guild_with_name = self._state.guilds.find_guild_by_name(request.guild_name)
+        new_channel_id = self._state.next_id()
+        new_channel = GuildChannel(new_channel_id, request.channel_name)
+        first_guild_with_name.channels.append(new_channel)
