@@ -1,18 +1,6 @@
 import abc
-from dataclasses import dataclass
 from ... import SystemState
-
-@dataclass(frozen=True, slots=True)
-class ReadyInfo:
-    userid: int
-    username: str
-    unavailable_guild_ids: list[int]
-
-
-@dataclass(frozen=True, slots=True)
-class GuildCreateInfo:
-    guild_id: int
-    guild_name: str
+from ...information import ReadyInfo, GuildCreateInfo
 
 
 class GatewayInformationInterface(abc.ABC):
