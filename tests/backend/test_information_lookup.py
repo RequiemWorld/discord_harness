@@ -1,5 +1,15 @@
 from . import BackendPiecesTestFixture
+from discord_harness.backend import User
 
+class TestUserIdLookupWithUserName(BackendPiecesTestFixture):
+
+    async def test_should_return_id_of_existing_user_with_given_name(self):
+        new_user = User(id_=139, username="SomeoneSomewhere")
+        self._system_state.users.add_new_user(new_user)
+        self.assertIs(139, await self._backend_lookup.lookup_id_for_name("SomeoneSomewhere"))
+
+    async def test_should_return_none_when_no_user_with_given_name_exists(self):
+        self.assertIsNone(await self._backend_lookup.lookup_id_for_name("NobodyNowhere"))
 
 class TestUserExistenceLookupWithUserName(BackendPiecesTestFixture):
 

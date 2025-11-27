@@ -3,6 +3,10 @@ from .. import SystemState
 
 class DiscordBackendLookup(abc.ABC):
     @abc.abstractmethod
+    async def lookup_id_for_name(self, user_name: str):
+        raise NotImplementedError
+
+    @abc.abstractmethod
     async def lookup_user_existence_by_name(self, user_name: str):
         raise NotImplementedError
 
@@ -14,6 +18,9 @@ class DiscordBackendLookup(abc.ABC):
 class SystemStateBackendLookup(DiscordBackendLookup):
     def __init__(self, state: SystemState):
         self._state = state
+
+    async def lookup_id_for_name(self, user_name: str):
+        return self._state.users.find_id_for_username(username=user_name)
 
     async def lookup_user_existence_by_name(self, user_name: str):
         return self._state.users.find_by_username(user_name) is not None
