@@ -1,9 +1,7 @@
-import abc
-import discord
 from discord.state import ConnectionState
 from discord_harness import make_ready_payload
-from discord_harness.backend.information import ReadyInfo
-from discord_harness.backend.information import GuildCreateInfo
+from discord_harness.database.information import ReadyInfo
+from discord_harness.database.information import GuildCreateInfo
 
 
 # No automated tests exist for this, it's mostly meant as an implementation

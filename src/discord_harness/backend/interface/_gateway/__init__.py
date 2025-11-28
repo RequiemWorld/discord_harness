@@ -1,6 +1,6 @@
 import abc
 from discord_harness.database import SystemState
-from ...information import ReadyInfo, GuildCreateInfo
+from discord_harness.database.information import ReadyInfo, GuildCreateInfo
 
 
 class GatewayInformationInterface(abc.ABC):
