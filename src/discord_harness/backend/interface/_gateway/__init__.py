@@ -1,5 +1,5 @@
 import abc
-from ... import SystemState
+from discord_harness.database import SystemState
 from ...information import ReadyInfo, GuildCreateInfo
 
 

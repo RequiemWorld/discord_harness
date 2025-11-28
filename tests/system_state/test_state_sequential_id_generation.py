@@ -1,5 +1,5 @@
 import unittest
-from discord_harness.backend import SystemState
+from discord_harness.database import SystemState
 
 
 class TestSystemStateId(unittest.TestCase):

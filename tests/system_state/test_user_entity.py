@@ -1,5 +1,5 @@
 from unittest import TestCase
-from discord_harness.backend import User
+from discord_harness.database import User
 
 
 class TestUserEntityConstruction(TestCase):

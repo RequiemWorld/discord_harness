@@ -1,7 +1,7 @@
 import unittest
-from discord_harness.backend import Guild
-from discord_harness.backend import GuildChannel
-from discord_harness.backend import GuildMessage
+from discord_harness.database import Guild
+from discord_harness.database import GuildChannel
+from discord_harness.database import GuildMessage
 
 
 class EmptyGuildChannelTestFixture(unittest.TestCase):

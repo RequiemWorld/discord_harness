@@ -1,5 +1,5 @@
 import unittest
-from discord_harness import SystemState
+from discord_harness.database import SystemState
 from discord_harness.backend.interface import UserCreationRequest
 from discord_harness.backend.interface import GuildCreationRequest
 from discord_harness.backend.interface import SystemStateBackendUsers

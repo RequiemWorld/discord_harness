@@ -1,5 +1,6 @@
 import abc
-from .. import SystemState
+from ... import SystemState
+
 
 class DiscordBackendLookup(abc.ABC):
     @abc.abstractmethod

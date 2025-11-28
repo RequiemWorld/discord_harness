@@ -1,7 +1,7 @@
 # Possibly using the word "collection", loosely here.
 import unittest
-from discord_harness.backend import Guild
-from discord_harness.backend import Guilds
+from discord_harness.database import Guild
+from discord_harness.database import Guilds
 
 
 def _make_guild(id_: int, name: str = "Name123" , owner_id = 566777) -> Guild:

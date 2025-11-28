@@ -1,7 +1,7 @@
 import discord
 from ._users import HarnessUsers
 from ._guilds import HarnessGuilds
-from discord_harness.backend import SystemState
+from discord_harness.database import SystemState
 from discord_harness.backend.interface import SystemStateBackendUsers
 from discord_harness.backend.interface import SystemStateBackendGuilds
 from discord_harness.backend.interface import SystemStateBackendLookup

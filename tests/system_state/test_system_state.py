@@ -1,7 +1,7 @@
 import unittest
-from discord_harness.backend import Guilds
-from discord_harness.backend import Users
-from discord_harness.backend import SystemState
+from discord_harness.database import Guilds
+from discord_harness.database import Users
+from discord_harness.database import SystemState
 
 
 class TestSystemStateProperties(unittest.TestCase):

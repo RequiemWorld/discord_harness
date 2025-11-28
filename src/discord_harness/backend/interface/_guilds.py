@@ -1,8 +1,8 @@
 import abc
 from dataclasses import dataclass
 from discord_harness import SystemState
-from discord_harness.backend import Guild
-from discord_harness.backend import GuildChannel
+from discord_harness.database import Guild
+from discord_harness.database import GuildChannel
 
 
 @dataclass(frozen=True, slots=True)

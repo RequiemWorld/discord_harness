@@ -1,7 +1,6 @@
 import abc
 from dataclasses import dataclass
-from discord_harness import User
-from discord_harness import SystemState
+from discord_harness import User, SystemState
 
 
 @dataclass(frozen=True, slots=True)
