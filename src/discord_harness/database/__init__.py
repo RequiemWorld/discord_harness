@@ -5,3 +5,5 @@ from ._entities._guilds import GuildMessage
 from ._entities._users import User
 from ._entities._users import Users
 from ._entities._state import SystemState
+from ._utilities import GatewayInformationPuller
+from ._utilities import MockGatewayInformationPuller
