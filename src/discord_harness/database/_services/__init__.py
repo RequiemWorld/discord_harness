@@ -2,3 +2,4 @@ from ._gateway_info_puller import GatewayInformationPuller
 from ._gateway_info_puller import MockGatewayInformationPuller
 from ._gateway_info_puller import SystemStateGatewayInformationPuller
 from ._user_operations import UserOperationsService
+from ._guild_operations import GuildOperationsService

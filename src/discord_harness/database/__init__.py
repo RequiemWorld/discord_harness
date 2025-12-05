@@ -9,3 +9,4 @@ from ._services import GatewayInformationPuller
 from ._services import MockGatewayInformationPuller
 from ._services import SystemStateGatewayInformationPuller
 from ._services import UserOperationsService
+from ._services import GuildOperationsService
