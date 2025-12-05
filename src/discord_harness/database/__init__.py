@@ -5,6 +5,6 @@ from ._entities._guilds import GuildMessage
 from ._entities._users import User
 from ._entities._users import Users
 from ._entities._state import SystemState
-from ._utilities import GatewayInformationPuller
-from ._utilities import MockGatewayInformationPuller
-from ._utilities import SystemStateGatewayInformationPuller
+from ._services import GatewayInformationPuller
+from ._services import MockGatewayInformationPuller
+from ._services import SystemStateGatewayInformationPuller
