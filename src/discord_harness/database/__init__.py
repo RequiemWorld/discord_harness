@@ -8,3 +8,4 @@ from ._entities._state import SystemState
 from ._services import GatewayInformationPuller
 from ._services import MockGatewayInformationPuller
 from ._services import SystemStateGatewayInformationPuller
+from ._services import UserOperationsService
